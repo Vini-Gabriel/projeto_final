@@ -35,7 +35,7 @@
 				<div class="card">
 					<div class="card-content">
 						<span class="card-title">Adicionar Convidado:</span>
-						<form th:action="@{/eventos/{idEvento}(idEvento={evento.id})}" method="post">
+						<form th:action="@{/eventos/{idEvento}(idEvento=${evento.id})}" method="post">
 						<div>
 							<input type="hidden" name="id" th:value="${convidado.id}" readonly="readonly">
 						</div>
