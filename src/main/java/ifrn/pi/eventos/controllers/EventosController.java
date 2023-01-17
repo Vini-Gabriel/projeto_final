@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ifrn.pi.eventos.models.Convidado;
 import ifrn.pi.eventos.models.Evento;
@@ -33,7 +34,7 @@ public class EventosController {
 	}
 	
 	@PostMapping
-	public String salvar(@Valid Evento evento, BindingResult result) {
+	public String salvar(@Valid Evento evento, BindingResult result, RedirectAttributes attributes) {
 		
 		if(result.hasErrors()) {
 			return form(evento);
@@ -41,6 +42,7 @@ public class EventosController {
 		
 		System.out.println(evento);
 		er.save(evento);
+		attributes.addFlashAttribute("mensagem", "Evento salvo com sucesso!");
 		
 		return "redirect:/eventos";
 	}
@@ -135,7 +137,7 @@ public class EventosController {
 	}
 	
 	@GetMapping("/{id}/remover")
-	public String apagarEvento(@PathVariable Long id) {
+	public String apagarEvento(@PathVariable Long id, RedirectAttributes attributes) {
 		
 		Optional<Evento> opt = er.findById(id);
 		
@@ -146,6 +148,7 @@ public class EventosController {
 			
 			cr.deleteAll(convidados);
 			er.delete(evento);
+			attributes.addFlashAttribute("mensagem", "Evento removido com sucesso!");
 		}
 		return "redirect:/eventos";
 	}
