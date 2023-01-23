@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Evento {
+public class Venda {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,7 +73,7 @@ public class Evento {
 
 	@Override
 	public String toString() {
-		return "Evento [id=" + id + ", nome=" + nome + ", local=" + local + ", data=" + data + ", horario=" + horario
+		return "Venda [id=" + id + ", nome=" + nome + ", local=" + local + ", data=" + data + ", horario=" + horario
 				+ "]";
 	}
 

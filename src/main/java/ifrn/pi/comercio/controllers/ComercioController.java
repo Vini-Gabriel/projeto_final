@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ifrn.pi.comercio.models.Convidado;
-import ifrn.pi.comercio.models.Evento;
-import ifrn.pi.comercio.repositories.ConvidadoRepository;
-import ifrn.pi.comercio.repositories.EventoRepository;
+import ifrn.pi.comercio.models.Produto;
+import ifrn.pi.comercio.models.Venda;
+import ifrn.pi.comercio.repositories.ProdutoRepository;
+import ifrn.pi.comercio.repositories.VendaRepository;
 import jakarta.validation.Valid;
 
 @Controller
@@ -24,145 +24,145 @@ import jakarta.validation.Valid;
 public class ComercioController {
 	
 	@Autowired
-	private EventoRepository er;
+	private VendaRepository vr;
 	@Autowired
-	private ConvidadoRepository cr;
+	private ProdutoRepository pr;
 
 	@GetMapping("/form")
-	public String form(Evento evento) {
-		return "comercio/formEvento";
+	public String form(Venda venda) {
+		return "comercio/formVenda";
 	}
 	
 	@PostMapping
-	public String salvar(@Valid Evento evento, BindingResult result, RedirectAttributes attributes) {
+	public String salvar(@Valid Venda venda, BindingResult result, RedirectAttributes attributes) {
 		
 		if(result.hasErrors()) {
-			return form(evento);
+			return form(venda);
 		}
 		
-		System.out.println(evento);
-		er.save(evento);
-		attributes.addFlashAttribute("mensagem", "Evento salvo com sucesso!");
+		System.out.println(venda);
+		vr.save(venda);
+		attributes.addFlashAttribute("mensagem", "Venda salvo com sucesso!");
 		
 		return "redirect:/comercio";
 	}
 	
 	@GetMapping
 	public ModelAndView listar() {
-		List<Evento> eventos = er.findAll();
+		List<Venda> vendas = vr.findAll();
 		ModelAndView mv = new ModelAndView("comercio/lista");
-		mv.addObject("eventos", eventos);
+		mv.addObject("vendas", vendas);
 		return mv;
 	}
 	
 	@GetMapping("/{id}")
-	public ModelAndView detalhar(@PathVariable Long id, Convidado convidado) {
+	public ModelAndView detalhar(@PathVariable Long id, Produto produto) {
 		ModelAndView md = new ModelAndView();
-		Optional<Evento> opt = er.findById(id);
+		Optional<Venda> opt = vr.findById(id);
 		if(opt.isEmpty()) {
 			md.setViewName("redirect:/comercio");
 			return md;
 		}
 		md.setViewName("comercio/detalhes");
-		Evento evento = opt.get();
-		md.addObject("evento", evento);
+		Venda venda = opt.get();
+		md.addObject("venda", venda);
 		
-		List<Convidado> convidados = cr.findByEvento(evento);
-		md.addObject("convidados", convidados);
+		List<Produto> produtos = pr.findByVenda(venda);
+		md.addObject("produtos", produtos);
 		
 		return md;
 	}
 	
-	@PostMapping("/{idEvento}")
-	public String salvarConvidado(@PathVariable Long idEvento, Convidado convidado) {
+	@PostMapping("/{idVenda}")
+	public String salvarProduto(@PathVariable Long idVenda, Produto produto) {
 		
-		System.out.println("Id do evento: " + idEvento);
-		System.out.println(convidado);
+		System.out.println("Id da venda: " + idVenda);
+		System.out.println(produto);
 		
-		Optional<Evento> opt = er.findById(idEvento);
+		Optional<Venda> opt = vr.findById(idVenda);
 		if(opt.isEmpty()) {
 			return "redirect:/comercio";
 		}
 		
-		Evento evento = opt.get();
-		convidado.setEvento(evento);
+		Venda venda = opt.get();
+		produto.setVenda(venda);
 		
-		cr.save(convidado);
+		pr.save(produto);
 		
-		return "redirect:/comercio/{idEvento}";
+		return "redirect:/comercio/{idVenda}";
 	}
 	
 	@GetMapping("/{id}/selecionar")
-	public ModelAndView selecionarEvento(@PathVariable Long id) {
+	public ModelAndView selecionarVenda(@PathVariable Long id) {
 		ModelAndView md = new ModelAndView(); 
-		Optional<Evento> opt = er.findById(id);
+		Optional<Venda> opt = vr.findById(id);
 		if(opt.isEmpty()) {
 			md.setViewName("redirect:/comercio");
 			return md;
 		}
 		
-		Evento evento = opt.get();
-		md.setViewName("comercio/formEvento");
-		md.addObject("evento", evento);
+		Venda venda = opt.get();
+		md.setViewName("comercio/formVenda");
+		md.addObject("venda", venda);
 		
 		return md;
 	}
 	
-	@GetMapping("/{idEvento}/convidados/{idConvidado}/selecionar")
-	public ModelAndView selecionarConvidado(@PathVariable Long idEvento, @PathVariable Long idConvidado) {
+	@GetMapping("/{idVenda}/produtos/{idProduto}/selecionar")
+	public ModelAndView selecionarProduto(@PathVariable Long idVenda, @PathVariable Long idProduto) {
 		ModelAndView md = new ModelAndView();
 		
-		Optional<Evento> optEvento = er.findById(idEvento);
-		Optional<Convidado> optConvidado = cr.findById(idConvidado);
+		Optional<Venda> optVenda = vr.findById(idVenda);
+		Optional<Produto> optProduto = pr.findById(idProduto);
 		
-		if(optEvento.isEmpty() || optConvidado.isEmpty()) {
+		if(optVenda.isEmpty() || optProduto.isEmpty()) {
 			md.setViewName("redirect:/comercio");
 			return md;
 		}
 		
-		Evento evento = optEvento.get();
-		Convidado convidado = optConvidado.get();
+		Venda venda = optVenda.get();
+		Produto produto = optProduto.get();
 		
-		if(evento.getId() != convidado.getEvento().getId()) {
+		if(venda.getId() != produto.getVenda().getId()) {
 			md.setViewName("redirect:/comercio");
 			return md;
 		}
 		
-		md.setViewName("eventos/detalhes");
-		md.addObject("convidado", convidado);
-		md.addObject("evento", evento);
-		md.addObject("convidados", cr.findByEvento(evento));
+		md.setViewName("comercio/detalhes");
+		md.addObject("produto", produto);
+		md.addObject("venda", venda);
+		md.addObject("produtos", pr.findByVenda(venda));
 		
 		return md;
 	}
 	
 	@GetMapping("/{id}/remover")
-	public String apagarEvento(@PathVariable Long id, RedirectAttributes attributes) {
+	public String apagarVenda(@PathVariable Long id, RedirectAttributes attributes) {
 		
-		Optional<Evento> opt = er.findById(id);
+		Optional<Venda> opt = vr.findById(id);
 		
 		if(!opt.isEmpty()) {
-			Evento evento = opt.get();
+			Venda venda = opt.get();
 			
-			List<Convidado> convidados = cr.findByEvento(evento);
+			List<Produto> produtos = pr.findByVenda(venda);
 			
-			cr.deleteAll(convidados);
-			er.delete(evento);
-			attributes.addFlashAttribute("mensagem", "Evento removido com sucesso!");
+			pr.deleteAll(produtos);
+			vr.delete(venda);
+			attributes.addFlashAttribute("mensagem", "Venda removido com sucesso!");
 		}
 		return "redirect:/comercio";
 	}
 	
-	@GetMapping("/{idEvento}/convidados/{idConvidado}/remover")
-	public String apagarConvidado(@PathVariable Long idEvento, @PathVariable Long idConvidado) {
+	@GetMapping("/{idVenda}/produtos/{idProduto}/remover")
+	public String apagarProduto(@PathVariable Long idVenda, @PathVariable Long idProduto) {
 		
-		Optional<Convidado> opt = cr.findById(idConvidado);
+		Optional<Produto> opt = pr.findById(idProduto);
 		
 		if(!opt.isEmpty()) {
-			Convidado convidado = opt.get();
-			cr.delete(convidado);
+			Produto produto = opt.get();
+			pr.delete(produto);
 		}
-		return "redirect:/comercio/{idEvento}";
+		return "redirect:/comercio/{idVenda}";
 	}
 
 }
