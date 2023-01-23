@@ -1,4 +1,4 @@
-package ifrn.pi.eventos.models;
+package ifrn.pi.comercio.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

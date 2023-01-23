@@ -1,4 +1,4 @@
-package ifrn.pi.eventos.controllers;
+package ifrn.pi.comercio.controllers;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import ifrn.pi.eventos.models.Convidado;
-import ifrn.pi.eventos.models.Evento;
-import ifrn.pi.eventos.repositories.ConvidadoRepository;
-import ifrn.pi.eventos.repositories.EventoRepository;
+import ifrn.pi.comercio.models.Convidado;
+import ifrn.pi.comercio.models.Evento;
+import ifrn.pi.comercio.repositories.ConvidadoRepository;
+import ifrn.pi.comercio.repositories.EventoRepository;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/eventos")
-public class EventosController {
+@RequestMapping("/comercio")
+public class ComercioController {
 	
 	@Autowired
 	private EventoRepository er;
@@ -30,7 +30,7 @@ public class EventosController {
 
 	@GetMapping("/form")
 	public String form(Evento evento) {
-		return "eventos/formEvento";
+		return "comercio/formEvento";
 	}
 	
 	@PostMapping
@@ -44,13 +44,13 @@ public class EventosController {
 		er.save(evento);
 		attributes.addFlashAttribute("mensagem", "Evento salvo com sucesso!");
 		
-		return "redirect:/eventos";
+		return "redirect:/comercio";
 	}
 	
 	@GetMapping
 	public ModelAndView listar() {
 		List<Evento> eventos = er.findAll();
-		ModelAndView mv = new ModelAndView("eventos/lista");
+		ModelAndView mv = new ModelAndView("comercio/lista");
 		mv.addObject("eventos", eventos);
 		return mv;
 	}
@@ -60,10 +60,10 @@ public class EventosController {
 		ModelAndView md = new ModelAndView();
 		Optional<Evento> opt = er.findById(id);
 		if(opt.isEmpty()) {
-			md.setViewName("redirect:/eventos");
+			md.setViewName("redirect:/comercio");
 			return md;
 		}
-		md.setViewName("eventos/detalhes");
+		md.setViewName("comercio/detalhes");
 		Evento evento = opt.get();
 		md.addObject("evento", evento);
 		
@@ -81,7 +81,7 @@ public class EventosController {
 		
 		Optional<Evento> opt = er.findById(idEvento);
 		if(opt.isEmpty()) {
-			return "redirect:/eventos";
+			return "redirect:/comercio";
 		}
 		
 		Evento evento = opt.get();
@@ -89,7 +89,7 @@ public class EventosController {
 		
 		cr.save(convidado);
 		
-		return "redirect:/eventos/{idEvento}";
+		return "redirect:/comercio/{idEvento}";
 	}
 	
 	@GetMapping("/{id}/selecionar")
@@ -97,12 +97,12 @@ public class EventosController {
 		ModelAndView md = new ModelAndView(); 
 		Optional<Evento> opt = er.findById(id);
 		if(opt.isEmpty()) {
-			md.setViewName("redirect:/eventos");
+			md.setViewName("redirect:/comercio");
 			return md;
 		}
 		
 		Evento evento = opt.get();
-		md.setViewName("eventos/formEvento");
+		md.setViewName("comercio/formEvento");
 		md.addObject("evento", evento);
 		
 		return md;
@@ -116,7 +116,7 @@ public class EventosController {
 		Optional<Convidado> optConvidado = cr.findById(idConvidado);
 		
 		if(optEvento.isEmpty() || optConvidado.isEmpty()) {
-			md.setViewName("redirect:/eventos");
+			md.setViewName("redirect:/comercio");
 			return md;
 		}
 		
@@ -124,7 +124,7 @@ public class EventosController {
 		Convidado convidado = optConvidado.get();
 		
 		if(evento.getId() != convidado.getEvento().getId()) {
-			md.setViewName("redirect:/eventos");
+			md.setViewName("redirect:/comercio");
 			return md;
 		}
 		
@@ -150,7 +150,7 @@ public class EventosController {
 			er.delete(evento);
 			attributes.addFlashAttribute("mensagem", "Evento removido com sucesso!");
 		}
-		return "redirect:/eventos";
+		return "redirect:/comercio";
 	}
 	
 	@GetMapping("/{idEvento}/convidados/{idConvidado}/remover")
@@ -162,7 +162,7 @@ public class EventosController {
 			Convidado convidado = opt.get();
 			cr.delete(convidado);
 		}
-		return "redirect:/eventos/{idEvento}";
+		return "redirect:/comercio/{idEvento}";
 	}
 
 }

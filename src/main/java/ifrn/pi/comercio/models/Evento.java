@@ -1,4 +1,4 @@
-package ifrn.pi.eventos.models;
+package ifrn.pi.comercio.models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

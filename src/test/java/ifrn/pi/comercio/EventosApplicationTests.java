@@ -1,4 +1,4 @@
-package ifrn.pi.eventos;
+package ifrn.pi.comercio;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
