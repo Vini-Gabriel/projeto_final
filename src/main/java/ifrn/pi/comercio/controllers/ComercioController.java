@@ -42,7 +42,7 @@ public class ComercioController {
 		
 		System.out.println(venda);
 		vr.save(venda);
-		attributes.addFlashAttribute("mensagem", "Venda salvo com sucesso!");
+		attributes.addFlashAttribute("mensagem", "Venda efetuada com sucesso!");
 		
 		return "redirect:/comercio";
 	}

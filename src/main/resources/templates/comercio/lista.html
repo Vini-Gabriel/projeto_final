@@ -13,7 +13,7 @@
 	<div th:replace="~{menu :: menu}"></div>
 	<div class="container">
 
-		<h1>Lista de eventos</h1>
+		<h1>Lista de Vendas</h1>
 
 		<p th:if="${mensagem}" th:text="${mensagem}"></p>
 		<table class="highlight">
@@ -28,16 +28,16 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="e : ${eventos}">
-					<td th:text="${e.id}">1</td>
-					<td><a th:href="@{/eventos/{id}(id=${e.id})}"><span
-							th:text="${e.nome}">Aniversário de João</span></a></td>
-					<td th:text="${e.local}">Clube</td>
-					<td th:text="${#temporals.format(e.data)}">25/02/2021</td>
-					<td th:text="${e.horario}">19:00</td>
+				<tr th:each="v : ${vendas}">
+					<td th:text="${v.id}">1</td>
+					<td><a th:href="@{/comercio/{id}(id=${v.id})}"><span
+							th:text="${v.nome}">Aniversário de João</span></a></td>
+					<td th:text="${v.local}">Clube</td>
+					<td th:text="${#temporals.format(v.data)}">25/02/2021</td>
+					<td th:text="${v.horario}">19:00</td>
 					<td>
-						<a th:href="@{/eventos/{id}/selecionar(id=${e.id})}"><i class="material-icons">edit</i></a>
-						<a th:href="@{/eventos/{id}/remover(id=${e.id})}"><i class="material-icons">delete</i></a>
+						<a th:href="@{/comercio/{id}/selecionar(id=${v.id})}"><i class="material-icons">edit</i></a>
+						<a th:href="@{/comercio/{id}/remover(id=${v.id})}"><i class="material-icons">delete</i></a>
 					</td>
 				</tr>
 			</tbody>

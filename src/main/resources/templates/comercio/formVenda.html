@@ -10,9 +10,9 @@
 <body>
 	<div th:replace="~{menu :: menu}"></div>
 	<div class="container">
-		<h1>Adicionar Evento</h1>
+		<h1>Adicionar Venda</h1>
 
-		<form action="/eventos" method="post" th:object="${evento}">
+		<form action="/comercio" method="post" th:object="${venda}">
 			<div>
 				<input type="hidden" th:field="*{id}" readonly="readonly">
 			</div>
