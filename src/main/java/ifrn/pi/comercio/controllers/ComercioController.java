@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ifrn.pi.comercio.models.Produto;
 import ifrn.pi.comercio.models.Venda;
 import ifrn.pi.comercio.repositories.ProdutoRepository;
+import ifrn.pi.comercio.repositories.UsuarioRepository;
 import ifrn.pi.comercio.repositories.VendaRepository;
 import jakarta.validation.Valid;
 
@@ -23,6 +24,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/comercio")
 public class ComercioController {
 	
+	@Autowired
+	private UsuarioRepository ur;
 	@Autowired
 	private VendaRepository vr;
 	@Autowired

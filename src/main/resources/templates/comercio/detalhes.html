@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <!-- Compiled and minified CSS -->
@@ -43,7 +43,7 @@
 							<label>Nome: </label> <input type="text" name="nome" th:value="${produto.nome}">
 						</div>
 						<div>
-							<label>RG: </label> <input type="text" name="rg" th:value="${produto.rg}">
+							<label>Valor: </label> <input type="text" name="valor" th:value="${produto.valor}">
 						</div>
 						<div>
 							<button type="submit" class="btn">Salvar</button>
@@ -65,15 +65,15 @@
 								<tr>
 									<th>Id</th>
 									<th>Nome</th>
-									<th>RG</th>
+									<th>Valor</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="p : ${produtos}">
 									<td th:text="${p.id}">1</td>
-									<td th:text="${p.nome}">gabriel</td>
-									<td th:text="${p.rg}">123</td>
+									<td th:text="${p.nome}">biscoito</td>
+									<td th:text="${p.valor}">123</td>
 									<td>
 										<a th:href="@{/comercio/{idVenda}/produtos/{idProduto}/selecionar(idVenda=${venda.id}, idProduto=${p.id})}"><i class="material-icons">edit</i></a>
 										<a th:href="@{/comercio/{idVenda}/produtos/{idProduto}/remover(idVenda=${venda.id}, idProduto=${p.id})}"><i class="material-icons">delete</i></a>
