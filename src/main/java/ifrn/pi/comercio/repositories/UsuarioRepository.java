@@ -1,10 +1,13 @@
 package ifrn.pi.comercio.repositories;
 
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.stereotype.Repository;
 import ifrn.pi.comercio.models.Usuario;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
+@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario, UUID>{
 	
-	Usuario findByEmail(String email);
+	Optional<Usuario> findByNome(String nome);
 }
