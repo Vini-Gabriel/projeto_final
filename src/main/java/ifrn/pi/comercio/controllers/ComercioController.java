@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class ComercioController {
 		return "comercio/formVenda";
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping
 	public String salvar(@Valid Venda venda, BindingResult result, RedirectAttributes attributes) {
 		
@@ -47,6 +49,7 @@ public class ComercioController {
 		return "redirect:/comercio";
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@GetMapping
 	public ModelAndView listar() {
 		List<Venda> vendas = vr.findAll();
@@ -55,6 +58,7 @@ public class ComercioController {
 		return mv;
 	}
 	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@GetMapping("/{id}")
 	public ModelAndView detalhar(@PathVariable Long id, Produto produto) {
 		ModelAndView md = new ModelAndView();
@@ -73,6 +77,7 @@ public class ComercioController {
 		return md;
 	}
 	
+	@PreAuthorize("hasRole(ROLE_ADMIN)")
 	@PostMapping("/{idVenda}")
 	public String salvarProduto(@PathVariable Long idVenda, Produto produto) {
 		
@@ -92,6 +97,7 @@ public class ComercioController {
 		return "redirect:/comercio/{idVenda}";
 	}
 	
+	@PreAuthorize("hasRole(ROLE_ADMIN)")
 	@GetMapping("/{id}/selecionar")
 	public ModelAndView selecionarVenda(@PathVariable Long id) {
 		ModelAndView md = new ModelAndView(); 
@@ -108,6 +114,7 @@ public class ComercioController {
 		return md;
 	}
 	
+	@PreAuthorize("hasRole(ROLE_ADMIN)")
 	@GetMapping("/{idVenda}/produtos/{idProduto}/selecionar")
 	public ModelAndView selecionarProduto(@PathVariable Long idVenda, @PathVariable Long idProduto) {
 		ModelAndView md = new ModelAndView();
@@ -136,6 +143,7 @@ public class ComercioController {
 		return md;
 	}
 	
+	@PreAuthorize("hasRole(ROLE_ADMIN)")
 	@GetMapping("/{id}/remover")
 	public String apagarVenda(@PathVariable Long id, RedirectAttributes attributes) {
 		
@@ -153,6 +161,7 @@ public class ComercioController {
 		return "redirect:/comercio";
 	}
 	
+	@PreAuthorize("hasRole(ROLE_ADMIN)")
 	@GetMapping("/{idVenda}/produtos/{idProduto}/remover")
 	public String apagarProduto(@PathVariable Long idVenda, @PathVariable Long idProduto) {
 		
