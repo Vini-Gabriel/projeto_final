@@ -1,7 +1,5 @@
 package ifrn.pi.comercio.models;
 
-import java.io.Serializable;
-import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,42 +13,40 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name = "TB_ROLE")
 public class RoleModel implements GrantedAuthority, Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID roleId;
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, unique = true)
-	private RoleName roleName;
-	
-	@Override
-	public String getAuthority() {
-		return this.roleName.toString();
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID roleId;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, unique = true)
+    private RoleName roleName;
 
-	public UUID getRoleId() {
-		return roleId;
-	}
 
-	public void setRoleId(UUID roleId) {
-		this.roleId = roleId;
-	}
+    @Override
+    public String getAuthority() {
+        return this.roleName.toString();
+    }
 
-	public RoleName getRoleName() {
-		return roleName;
-	}
+    public UUID getRoleId() {
+        return roleId;
+    }
 
-	public void setRoleName(RoleName roleName) {
-		this.roleName = roleName;
-	}
+    public void setRoleId(UUID roleId) {
+        this.roleId = roleId;
+    }
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
+    public RoleName getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(RoleName roleName) {
+        this.roleName = roleName;
+    }
 }

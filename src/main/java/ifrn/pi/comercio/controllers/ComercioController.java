@@ -29,12 +29,14 @@ public class ComercioController {
 	@Autowired
 	private ProdutoRepository pr;
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@GetMapping("/form")
 	public String form(Venda venda) {
 		return "comercio/formVenda";
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@PostMapping
 	public String salvar(@Valid Venda venda, BindingResult result, RedirectAttributes attributes) {
 		
@@ -77,7 +79,7 @@ public class ComercioController {
 		return md;
 	}
 	
-	@PreAuthorize("hasRole(ROLE_ADMIN)")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@PostMapping("/{idVenda}")
 	public String salvarProduto(@PathVariable Long idVenda, Produto produto) {
 		
@@ -97,7 +99,7 @@ public class ComercioController {
 		return "redirect:/comercio/{idVenda}";
 	}
 	
-	@PreAuthorize("hasRole(ROLE_ADMIN)")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@GetMapping("/{id}/selecionar")
 	public ModelAndView selecionarVenda(@PathVariable Long id) {
 		ModelAndView md = new ModelAndView(); 
@@ -114,7 +116,7 @@ public class ComercioController {
 		return md;
 	}
 	
-	@PreAuthorize("hasRole(ROLE_ADMIN)")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@GetMapping("/{idVenda}/produtos/{idProduto}/selecionar")
 	public ModelAndView selecionarProduto(@PathVariable Long idVenda, @PathVariable Long idProduto) {
 		ModelAndView md = new ModelAndView();
@@ -143,7 +145,7 @@ public class ComercioController {
 		return md;
 	}
 	
-	@PreAuthorize("hasRole(ROLE_ADMIN)")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@GetMapping("/{id}/remover")
 	public String apagarVenda(@PathVariable Long id, RedirectAttributes attributes) {
 		
@@ -161,7 +163,7 @@ public class ComercioController {
 		return "redirect:/comercio";
 	}
 	
-	@PreAuthorize("hasRole(ROLE_ADMIN)")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	@GetMapping("/{idVenda}/produtos/{idProduto}/remover")
 	public String apagarProduto(@PathVariable Long idVenda, @PathVariable Long idProduto) {
 		

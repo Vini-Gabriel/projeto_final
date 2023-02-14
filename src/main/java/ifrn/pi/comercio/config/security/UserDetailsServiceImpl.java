@@ -1,31 +1,30 @@
 package ifrn.pi.comercio.config.security;
 
 
+import ifrn.pi.comercio.models.UserModel;
+import ifrn.pi.comercio.repositories.UserRepository;
+import jakarta.transaction.Transactional;
+
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import ifrn.pi.comercio.models.Usuario;
-import ifrn.pi.comercio.repositories.UsuarioRepository;
-import jakarta.transaction.Transactional;
-
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-	final UsuarioRepository usuarioRepository;
-	
-	public UserDetailsServiceImpl(UsuarioRepository usuarioRepository) {
-		this.usuarioRepository = usuarioRepository;
-	}
-	
-	@Override
-	public UserDetails loadUserByUsername(String nome) throws UsernameNotFoundException {
-		Usuario usuario = usuarioRepository.findByNome(nome)
-				.orElseThrow(() -> new UsernameNotFoundException("usuario não encontrado com esse nome: " + nome));
-		return new User(usuario.getNome(), usuario.getSenha(), true, true, true, true, usuario.getAuthorities());
-	}
+    final UserRepository userRepository;
 
+    public UserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserModel userModel = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
+        return new User(userModel.getUsername(), userModel.getPassword(), true, true, true,true, userModel.getAuthorities());
+    }
 }
